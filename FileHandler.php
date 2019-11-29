@@ -1,27 +1,26 @@
 <?php
 
     class FileHandler {
-        private $filepath, $error, $linebreak;
+        private $filepath, $linebreak;
 
         /**
          * @param string $filepath
          * @param string $linebreak
          * @param boolean $createFile
+         * @throws Exception
          */
         public function __construct($filepath, $linebreak = "", $createFile = false) {
             if (!file_exists($filepath)) {
                 if ($createFile) {
                     $f = @fopen($filepath, "w");
                     if (!$f) {
-                        $this->error = "File creation error";
+                        throw new Exception("File creation error");
                     } else {
                         fclose($f);
                     }
                 } else {
-                    $this->error = "File not founded";
+                    throw new Exception("File not founded");
                 }
-            } else {
-                $this->error = null;
             }
             $this->filepath = $filepath;
             $this->linebreak = $linebreak;
@@ -42,20 +41,6 @@
         }
 
         /**
-         * @return null
-         */
-        public function getError() {
-            return $this->error;
-        }
-
-        /**
-         * @param null $error
-         */
-        public function setError($error) {
-            $this->error = $error;
-        }
-
-        /**
          * @return string
          */
         public function getLinebreak() {
@@ -71,16 +56,15 @@
 
         /**
          * @return string
+         * @throws Exception
          */
         public function read() {
             if (!$this->fileExists()) {
-                $this->error = "File not founded";
-                return null;
+                throw new Exception("File not founded");
             }
             $f = @fopen($this->filepath, "r");
             if (!$f) {
-                $this->error = "File opening error";
-                return null;
+                throw new Exception("File opening error");
             }
             $str = "";
             while (!feof($f)) {
@@ -91,25 +75,45 @@
         }
 
         /**
+         * @return array
+         * @throws Exception
+         */
+        public function dataRead() {
+            if (!$this->fileExists()) {
+                throw new Exception("File not founded");
+            }
+            $f = @fopen($this->filepath, "r");
+            if (!$f) {
+                throw new Exception("File opening error");
+            }
+            $arr = [];
+            while (!feof($f)) {
+                $tmp = fgets($f);
+                if(!$tmp || trim($tmp) == "") continue;
+                $arr[] = $tmp;
+            }
+            fclose($f);
+            return $arr;
+        }
+
+        /**
          * @param string $text
          * @param boolean $clear
          * @return boolean
+         * @throws Exception
          */
 
         public function write($text, $clear = false) {
             if (!$this->fileExists()) {
-                $this->error = "File not founded";
-                return false;
+                throw new Exception("File not founded");
             }
             $f = @fopen($this->filepath, ($clear ? "w" : "a"));
             if (!$f) {
-                $this->error = "File opening error";
-                return false;
+                throw new Exception("File opening error");
             }
             $ex = fwrite($f, $text);
             if ($ex === false) {
-                $this->error = "File writing error";
-                return false;
+                throw new Exception("File writing error");
             }
             fclose($f);
             return true;
@@ -117,11 +121,11 @@
 
         /**
          * @return boolean
+         * @throws Exception
          */
         private function fileExists() {
             if (!file_exists($this->filepath)) {
-                $this->error = "File not founded";
-                return false;
+                throw new Exception("File not founded");
             }
             return true;
         }
