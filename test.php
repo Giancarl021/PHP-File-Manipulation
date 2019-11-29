@@ -117,7 +117,7 @@
                         $fp->addRow([$a, $b, $c]);
                         break;
                     case "edt":
-                        var_dump($fp->editRow($a, [$a, $b, $c]));
+                        $fp->editRow($a, [$a, $b, $c]);
                 }
             } catch (Exception $e) {
                 echo $e->getMessage();
