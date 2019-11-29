@@ -202,7 +202,7 @@
         private function findRow($search) {
             $arr = [];
             try {
-                $this->loadData();
+                $arr = $this->loadData();
             } catch (Exception $e) {
                 $this->throwError($e);
             }
