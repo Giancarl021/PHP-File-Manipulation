@@ -164,6 +164,37 @@
         }
 
         /**
+         * @param $header array
+         * @throws Exception
+         */
+        public function printTable($header) {
+            $arr = [];
+            try {
+                $arr = $this->loadData();
+            } catch (Exception $e) {
+                $this->throwError($e);
+            }
+
+            $str = "<table><tr>";
+            foreach ($header as $th) {
+                $str .= "<th>$th</th>";
+            }
+            $str .= "</tr>";
+
+            foreach ($arr as $row) {
+                $str .= "<tr>";
+                foreach ($row as $col) {
+                    $str .= "<td>$col</td>";
+                }
+                $str .= "</tr>";
+            }
+
+            $str .= "</table>";
+
+            echo $str;
+        }
+
+        /**
          * @param $search
          * @return null|string
          * @throws Exception
