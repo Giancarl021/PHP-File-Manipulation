@@ -91,9 +91,12 @@
                 $this->throwError($e);
             }
             $r = [];
-            foreach ($arr as $val) {
-                $col = explode($this->columnDelimiter, $val);
-                array_push($r, $col);
+            foreach ($arr as $row) {
+                $columns = explode($this->columnDelimiter, $row);
+                foreach($columns as $key => $column) {
+                    $columns[$key] = trim($column);
+                }
+                array_push($r, $columns);
             }
             return $r;
         }
