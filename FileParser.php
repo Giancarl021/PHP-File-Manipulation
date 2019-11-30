@@ -208,7 +208,7 @@
             }
             foreach ($arr as $key => $row) {
                 foreach ($row as $col) {
-                    if ($col == $search) {
+                    if (trim($col) == $search) {
                         return $key;
                         break;
                     }
