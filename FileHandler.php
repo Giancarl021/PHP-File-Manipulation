@@ -124,9 +124,6 @@
          * @throws Exception
          */
         private function fileExists() {
-            if (!file_exists($this->filepath)) {
-                throw new Exception("File not founded");
-            }
-            return true;
+            return file_exists($this->filepath);
         }
     }
