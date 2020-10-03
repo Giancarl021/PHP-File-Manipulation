@@ -1,15 +1,15 @@
 <?php
 
     class FileHandler {
-        private $filepath, $linebreak;
+        private $filepath, $lineBreak;
 
         /**
          * @param string $filepath
-         * @param string $linebreak
+         * @param string $lineBreak
          * @param boolean $createFile
          * @throws Exception
          */
-        public function __construct($filepath, $linebreak = "", $createFile = false) {
+        public function __construct($filepath, $lineBreak = "", $createFile = false) {
             if (!file_exists($filepath)) {
                 if ($createFile) {
                     $f = @fopen($filepath, "w");
@@ -23,7 +23,7 @@
                 }
             }
             $this->filepath = $filepath;
-            $this->linebreak = $linebreak;
+            $this->lineBreak = $lineBreak;
         }
 
         /**
@@ -43,15 +43,15 @@
         /**
          * @return string
          */
-        public function getLinebreak() {
-            return $this->linebreak;
+        public function getLineBreak() {
+            return $this->lineBreak;
         }
 
         /**
-         * @param string $linebreak
+         * @param string $lineBreak
          */
-        public function setLinebreak($linebreak) {
-            $this->linebreak = $linebreak;
+        public function setLineBreak($lineBreak) {
+            $this->lineBreak = $lineBreak;
         }
 
         /**
@@ -68,7 +68,7 @@
             }
             $str = "";
             while (!feof($f)) {
-                $str .= fgets($f) . $this->linebreak;
+                $str .= fgets($f) . $this->lineBreak;
             }
             fclose($f);
             return $str;
