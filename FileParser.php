@@ -66,9 +66,11 @@
             $str = "";
             foreach ($data as $val) {
                 if (gettype($val) === "array") {
-                    $str .= implode($this->columnDelimiter, $val);
+                    $str .= implode($this->columnDelimiter, array_map(function ($item) {
+                        return urlencode($item);
+                    }, $val));
                 } else {
-                    $str .= $val;
+                    $str .= urlencode($val);
                 }
                 $str .= $this->rowDelimiter;
             }
@@ -94,7 +96,7 @@
             foreach ($arr as $row) {
                 $columns = explode($this->columnDelimiter, $row);
                 foreach($columns as $key => $column) {
-                    $columns[$key] = trim($column);
+                    $columns[$key] = trim(urldecode($column));
                 }
                 array_push($r, $columns);
             }
@@ -107,9 +109,11 @@
          */
         public function addRow($data) {
             if (gettype($data) === "array") {
-                $str = implode($this->columnDelimiter, $data);
+                $str = implode($this->columnDelimiter, array_map(function ($item) {
+                    return urlencode($item);
+                }, $data));
             } else {
-                $str = $data;
+                $str = urlencode($data);
             }
             try {
                 $this->fileHandler->write($str . $this->rowDelimiter);
